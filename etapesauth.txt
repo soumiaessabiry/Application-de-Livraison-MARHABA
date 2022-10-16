@@ -1,0 +1,10 @@
+1---> connexion avec base donner(router + insert in bd...)
+2---> auth
+    ->valide data
+    function validate(model, object, scope) {
+  const schema = getSchema(model, scope);
+  return schema.validate(object);
+}
+
+    ->verfier si emial et deja exist in bd
+    ->hacher password(@hapi/joi)

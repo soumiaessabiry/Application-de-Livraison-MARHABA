@@ -1,14 +1,16 @@
 const express=require('express')
 const app=express()
 const db=require('./database/db')
-const port=8081
-//*******importer dotenv*******//
+const bodyParser=require('body-parser')
 
+//*******importer dotenv*******//
 const dotenv=require('dotenv')
 dotenv.config()
+const PORT=process.env.PORT || 8081
+
 // medlwer
-app.use(express.json())
-app.use(express.urlencoded())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
 
 //********importer les router*******//
 const routeAuth=require('./routes/AuthRoute')
@@ -40,7 +42,7 @@ app.use('/api/auth',routeAuth)
 
 
 
-app.listen(port,()=>{
-    console.log(`serveur connect success in port ${port}`)
+app.listen(PORT,()=>{
+    console.log(`serveur connect success in port ${PORT}`)
 })
 
