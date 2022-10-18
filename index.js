@@ -14,13 +14,16 @@ app.use(bodyParser.urlencoded())
 
 //********importer les router*******//
 const routeAuth=require('./routes/AuthRoute')
+const User = require('./models/UserModel')
 
 //******** middlwares pour register*******//
 app.use('/api/auth',routeAuth)
+// app.use('/',(req,res)=>{
+//     res.send(user)
+// })
 
 //******** middlwares pour login*******//
 // app.use('/api/auth')
-
 
 
 
