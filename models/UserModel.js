@@ -30,6 +30,10 @@ const  userSchema= new Schema({
         date:{
             type:Date,
             default:Date.now
+        },
+        confirmed:{
+            type:Boolean,
+            default:false
         }
 
 

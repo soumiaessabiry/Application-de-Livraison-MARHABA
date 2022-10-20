@@ -4,56 +4,63 @@ const bcrypt = require("bcrypt")
 var jwt=require("jsonwebtoken");
 const tokenver=require('./TokenVerifier')
 const ls=require('local-storage')
-router.post('/register',async(req,res)=>{
+const nm=require('nodemailer')
+const a=require('../nodmoler');
 
-//**** */ chec email is exist in bd
+/**********************************************************************************************************/
+router.post('/register',async(req,res)=>{
+    ls('email',req.body.email)
     const checUser=await Users.findOne({
         email: req.body.email
     });
     if(checUser){
         return res.send('email daja existe')
     }
-
-        //******hach password 
+    //******hach password 
     const salt= await bcrypt.genSalt(10)
     let passtostr=req.body.password.toString();
     let  hachpassword=await bcrypt.hash(passtostr,salt);
-      //***recuperer data
+    //*****recuperer data
+
     const user=new Users({
         username:req.body.username,
         email:req.body.email,
         password:hachpassword,
-        role:req.body.role
+        role:req.body.role,
+     });
 
-    });
-        //**saveuser**/
-
+    
+    //**saveuser**/
     const userSave=await user.save();
         try{
+            a.main()
             res.send(userSave)
+           
         } catch (error) {
             res.status(403).send(error)
         }
     });
-   //*******login************/
+//*******login************/
 
 router.post('/login', async(req,res)=>{
-
     let emailLogin=req.body.email;
     let passwordlog=req.body.password.toString();
+    let confirmid=true
 
-    const checuserexit=await Users.findOne({email:emailLogin});
+    
+
+    const checuserexit=await Users.findOne({email:emailLogin,confirmed:confirmid});
     if (checuserexit) {
         const comparpwd=await bcrypt.compare(passwordlog,checuserexit.password)
         if(!comparpwd){
             res.send('password incorrect')
         }else{
             const tokene=jwt.sign({checuserexit},process.env.TOKEN_SECRET);
-            ls('token',tokene)
+        
             res.send('User existe')
         }
     }else{
-        res.send("email or password  Inoccerct !!")
+        res.send("veuillez verifier your mail!!")
     }
     //***Creeat token */
    
@@ -68,6 +75,7 @@ router.post('/login', async(req,res)=>{
     router.get('/Admin',tokenver.verification(["admin"]),(req,res)=>{
      res.send('binevenu admin')
     })
+    router.get('/confirm/:token',a.confirm)
 
 
 

@@ -10,7 +10,7 @@ const PORT=process.env.PORT || 8081
 
 // medlwer
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({extended:true}))
 
 //********importer les router*******//
 const routeAuth=require('./routes/AuthRoute')
@@ -24,16 +24,6 @@ app.use('/api/auth',routeAuth)
 
 //******** middlwares pour login*******//
 // app.use('/api/auth')
-
-
-
-
-
-
-
-
-
-
 
 
 

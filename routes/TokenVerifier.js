@@ -13,9 +13,10 @@ function verification(data){
             }else{
                 res.send('Access Denied')
             }
+
     
         }else{
-            res.send('Invalid token')
+            res.send('Invaclid token')
         }
     
     }else{
